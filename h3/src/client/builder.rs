@@ -85,6 +85,25 @@ impl Builder {
         self
     }
 
+    /// Indicates to the peer that WebTransport is supported.
+    ///
+    /// See: [establishing a webtransport session](https://datatracker.ietf.org/doc/html/draft-ietf-webtrans-http3/#section-3.1)
+    ///
+    /// Supporting for webtransport also requires setting `enable_datagram`.
+    #[inline]
+    pub fn enable_webtransport(&mut self, value: bool) -> &mut Self {
+        self.config.settings.enable_webtransport = value;
+        self
+    }
+
+    /// Indicates that the client or server supports HTTP/3 datagrams
+    ///
+    /// See: <https://www.rfc-editor.org/rfc/rfc9297#section-2.1.1>
+    pub fn enable_datagram(&mut self, value: bool) -> &mut Self {
+        self.config.settings.enable_datagram = value;
+        self
+    }
+
     /// Just like in HTTP/2, HTTP/3 also uses the concept of "grease"
     /// to prevent potential interoperability issues in the future.
     /// In HTTP/3, the concept of grease is used to ensure that the protocol can evolve
