@@ -45,7 +45,7 @@ where
     session_id: SessionId,
     /// The underlying HTTP/3 connection
     server_conn: Mutex<Connection<C, B>>,
-    connect_stream: RequestStream<C::BidiStream, B>,
+    // connect_stream: RequestStream<C::BidiStream, B>,
     opener: Mutex<C::OpenStreams>,
 }
 
@@ -59,7 +59,7 @@ where
     /// TODO: is the API or the user responsible for validating the CONNECT request?
     pub async fn accept(
         request: Request<()>,
-        mut stream: RequestStream<C::BidiStream, B>,
+        stream: &mut RequestStream<C::BidiStream, B>,
         mut conn: Connection<C, B>,
     ) -> Result<Self, Error> {
         let shared = conn.shared_state().clone();
@@ -124,7 +124,7 @@ where
             session_id,
             opener,
             server_conn: Mutex::new(conn),
-            connect_stream: stream,
+            // connect_stream: stream,
         })
     }
 
@@ -143,10 +143,10 @@ where
     where
         C: SendDatagramExt<B>,
     {
-        self.server_conn
-            .lock()
-            .unwrap()
-            .send_datagram(self.connect_stream.id(), data)?;
+        // self.server_conn
+        //     .lock()
+        //     .unwrap()
+        //     .send_datagram(self.connect_stream.id(), data)?;
 
         Ok(())
     }
